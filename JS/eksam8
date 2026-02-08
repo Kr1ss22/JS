@@ -1,0 +1,30 @@
+#!/bin/bash
+
+read -p "Lisa kasutajanimi: " UUSKASUTAJA
+read -sp "Lisa parool: " UUSGRUPP
+
+sudo groupadd "$UUSGRUPP" 2>/dev/null
+sudo useradd -m "$UUSKASUTAJA" 2>/dev/null
+sudo usermod -aG"$UUSGRUPP" "$UUSKASUTAJA" 2>/dev/null
+
+sudo mkdir -p /home/eksam8/logid
+(uptime; who) | sudo tee /home/eksam8/logid/jooksvahetk.txt >/dev/null
+
+PERM_TEXT=$(stat -c %A /home/eksam8/logid/jooksvahetk.txt)
+
+if [ "$PERM_TEXT" != "-rw-r-----" ]; then
+  sudo chmod 640 /home/eksam8/logid/jooksvahetk.txt
+  echo "failil polnud õigusi"
+fi
+
+sudo mkdir -p /home/eksam8/kaustA
+ls -l /home | sudo tee /home/eksam8/kaustA/sisu.txt >/dev/null
+
+sudo mkdir -p /home/eksam8/kaustB
+ls -l /home | sudo tee /home/eksam8/kaustB/sisu.txt >/dev/null
+
+if ! systemctl is-active --quiet systemd-journald; then
+  echo "systemd-journald ei tööta"
+fi
+
+echo "Pilet 8 lopetatud edukalt."
