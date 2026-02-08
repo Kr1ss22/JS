@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+read -p "Sisesta kasutajanimi: " KASUTAJA
+read -p "Sisesta grupi nimi: " GRUPP
+
+sudo groupadd "$GRUPP" 2>/dev/null
+sudo useradd -m "$KASUTAJA" 2>/dev/null
+sudo usermod -aG "$GRUPP" "$KASUTAJA" 2>/dev/null
+
+
+sudo mkdir -p /home/eksam8/logid
+( uptime; who ) | sudo tee /home/eksam8/logid/jooksvahetk.txt >/dev/null
+
+
+
+PERM_TEXT=$(stat -c %A /home/eksam8/logid/jooksvahetk.txt)
+
+if [ "$PERM_TEXT" != "-rw-r-----" ]; then
+  sudo chmod 640 /home/eksam8/logid/jooksvahetk.txt
+  echo "HOIATUS: jooksvahetk.txt õigused polnud 640, parandasin ära."
+fi
+
+
+
+for K in A B C; do
+  sudo mkdir -p "/home/eksam8/kaust$K"
+  ls -l /home | sudo tee "/home/eksam8/kaust$K/sisu.txt" >/dev/null
+done
+
+
+
+if ! systemctl is-active --quiet systemd-journald; then
+  echo "HOIATUS: systemd-journald ei tööta!"
+fi
+
+echo "Pilet 8 lõpetatud edukalt."

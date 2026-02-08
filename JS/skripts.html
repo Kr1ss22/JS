@@ -1,0 +1,21 @@
+#!/bin/bash
+
+read KASUTAJA
+read GRUPP
+
+groupadd "$GRUPP" 2>/dev/null
+useradd -m "$KASUTAJA" 2>/dev/null
+usermod -aG "$GRUPP" "$KASUTAJA"
+
+mkdir -p /home/eksam8/logid
+uptime > /home/eksam8/logid/jooksvahetk.txt
+who >> /home/eksam8/logid/jooksvahetk.txt
+
+chmod 640 /home/eksam8/logid/jooksvahetk.txt
+
+mkdir -p /home/eksam8/kaustA /home/eksam8/kaustB /home/eksam8/kaustC
+ls -l /home > /home/eksam8/kaustA/sisu.txt
+ls -l /home > /home/eksam8/kaustB/sisu.txt
+ls -l /home > /home/eksam8/kaustC/sisu.txt
+
+echo "Pilet 8 lõpetatud edukelt."
