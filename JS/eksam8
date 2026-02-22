@@ -12,7 +12,7 @@ sudo mkdir -p /home/eksam8/logid
 
 PERM_TEXT=$(stat -c %A /home/eksam8/logid/jooksvahetk.txt)
 
-if [ "$PERM_TEXT" != "-rw-r-----" ]; then
+if [ "$PERM_TEXT" != "640" ]; then
   sudo chmod 640 /home/eksam8/logid/jooksvahetk.txt
   echo "failil polnud õigusi"
 fi
