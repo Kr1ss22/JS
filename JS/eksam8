@@ -1,7 +1,7 @@
 #!/bin/bash
 
 read -p "Lisa kasutajanimi: " UUSKASUTAJA
-read -sp "Lisa parool: " UUSGRUPP
+read -p "Lisa grupinimi: " UUSGRUPP
 
 sudo groupadd "$UUSGRUPP" 2>/dev/null
 sudo useradd -m "$UUSKASUTAJA" 2>/dev/null
